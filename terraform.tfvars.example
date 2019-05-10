@@ -1,0 +1,45 @@
+terragrunt = {
+
+  # Configure Terragrunt to automatically store tfstate files in S3
+  remote_state = {
+    backend = "s3"
+    config {
+      encrypt = true
+      bucket = "<s3_bucket_name>"
+      key = "${path_relative_to_include()}/terraform.tfstate"
+      region = "<s3_bucket_region>"
+      dynamodb_table = "<dynamodb_table_name>"
+    }
+  }
+  s3_bucket_tags {
+      Name = "Terraform Remote State Storage for <project>-<environment>"
+      Project = "<project>"
+      Environment = "<environment>"
+      ProductOwner = "<productowner>"
+  }
+
+  dynamodb_table_tags {
+      Name = "Terraform Remote State Storage for <project>-<environment>"
+      Project = "<project>"
+      Environment = "<environment>"
+      ProductOwner = "<productowner>"
+  }
+
+  terraform {
+    source = "<source_path_of_terraform_child_modules>"
+    extra_arguments "common_vars" {
+      commands = [
+        "apply",
+        "destroy",
+        "plan",
+        "import",
+        "push",
+        "refresh"
+      ]
+
+      arguments = [
+        "-var-file=${get_parent_tfvars_dir()}/common.tfvars",
+      ]
+    }
+  }
+}

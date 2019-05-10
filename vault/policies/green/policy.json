@@ -1,0 +1,43 @@
+{
+  "Sid": "AllowToDownloadCACerts",
+  "Effect": "Allow",
+  "Action": [
+    "ssm:GetParameters"
+  ],
+  "Resource": [
+      "arn:aws:ssm:${region}:*:parameter/certs/${project}/${environment}/*",
+      "arn:aws:ssm:${region}:*:parameter/vault-init-config/${project}/${environment}/*"
+  ]
+},
+{
+  "Sid": "AllowToStoreBackupOfRecoveryKeys",
+  "Effect": "Allow",
+  "Action": [
+    "s3:ListBucket",
+    "s3:PutObject"
+  ],
+  "Resource": [
+    "arn:aws:s3:::${backup_bucket_name}",
+    "arn:aws:s3:::${backup_bucket_name}/*"
+  ]
+},
+{
+  "Sid": "AllowSearchSSM",
+  "Effect": "Allow",
+  "Action": [
+    "ssm:DescribeParameters"
+  ],
+  "Resource": [
+      "*"
+  ]
+},
+{
+  "Sid": "AllowDownloadOfGpgKeys",
+  "Effect": "Allow",
+  "Action": [
+    "ssm:GetParameters"
+  ],
+  "Resource": [
+      "arn:aws:ssm:${region}:*:parameter/vault-unseal-key-holders/*"
+  ]
+}

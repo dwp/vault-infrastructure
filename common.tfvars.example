@@ -1,0 +1,691 @@
+#################################################
+# GENERAL VARIABLES
+#################################################
+region                              = "eu-west-2"
+project                             = "proj-poc"
+team                                = "proj"
+environment                         = "poc"
+common_project                      = "proj-management"
+common_environment                  = "nonprod"
+user_name                           = {
+  consul = "consul"
+  vault = "vault"
+}
+group_name                          = {
+  consul = "consul"
+  vault = "vault"
+}
+user_id                             = {
+  consul = "0000"
+  vault = "0000"
+}
+group_id                            = {
+  consul = "0000"
+  vault = "0000"
+}
+ami_disk_presents                   = {
+  blue = "2"
+  green = "2"
+}
+vault_token_ssm_path = "/vault_ssm_path"
+vault_backend_token_name = "vault-token-name"
+consul_ports = "8300 8301 8302 8400 8500 8502 8600"
+consul_https_port = "8501"
+grpc_port = "8502"
+vault_port = "8200"
+vault_cluster_port = "8201"
+no_of_uuids_to_generate = "10"
+slack_project_code = ["proj"]
+hook_url = ["hook-url-1"]
+slack_channel = ["#vault-alert"]
+
+#################################################
+# STATE_FILE VARIABLES
+#################################################
+basic_infra_terraform_state         = "basic_infra/terraform.tfstate"
+consul_terraform_state              = "consul/terraform.tfstate"
+common_vpc_terraform_state          = "vpc/terraform.tfstate"
+slack_topic_terraform_state         = "slack/terraform.tfstate"
+#################################################
+# `basic_infra` VARIABLES
+#################################################
+# Some values are not required for Dev environment. So filling "dummy" for consistency
+#-------------------------------------------------
+use_existing_vpc                    = "false"
+subnet_names                        = ["public","consul","vault"]
+cidr_block                          = "192.168.0.0/16"
+subnet_cidr_block                   = {
+  public = ["192.168.0.0/24","192.168.1.0/24","192.168.2.0/24"]
+  consul = ["192.168.3.0/24","192.168.4.0/24","192.168.5.0/24"]
+  vault = ["192.168.6.0/24","192.168.7.0/24","192.168.8.0/24"]
+}
+generic_sg_name                     = ["vpc-sg"]
+dhcp_domain                         = "example.local"
+cloudwatch_log_retention            = "0"
+map_public_ip_on_launch             = ["false"]
+public_subnet_name                  = "public"
+subnet_names_on_route_to_igw        = ["public"]
+subnet_names_on_route_to_nat        = ["consul","vault"]
+ssh_changes_are_there               = "change1" #change this value whenever a change in SSH keys
+pass_path                           = "proj"
+generate_a_key                      = 1
+key_name                            = "ssh-key"
+associate_private_zones             = ["example.local"]
+subnet_names_on_route_to_peer       = ["consul","vault"]
+what_services_i_need                = ["internetgateway","natgateway","ssh"]
+what_connections_i_need             = ["vpn-access","monitoring"]
+kms_key_name                        = "unseal-key"
+
+#Used only For Dev environment
+existing_ssh_terraform_path         = "ssh-key"
+common_dev_project                  = "common"
+common_dev_environment              = "dev"
+dev_availability_zone               = "eu-west-2b"
+
+#################################################
+# `consul` and `vault` common variables
+#################################################
+hardened_ami_name         = "infra"
+hardened_ami_architecture = "x86_64"
+hardened_ami_virt_type  = "hvm"
+instance_short_name     = {
+  consul = "consul-server"
+  vault = "vault-server"
+}
+cert_algorithm           = {
+  consul = ["RSA"]
+  vault = ["RSA"]
+}
+cert_key_length          = {
+  consul = ["1024"]
+  vault = ["1024"]
+}
+sg_name  =  {
+  consul = ["consul"]
+  vault = ["vault"]
+}
+
+ec2_role_names = {
+  consul = "consul-ec2-role"
+  vault = "vault-ec2-role"
+}
+
+
+#################################################
+# `consul` VARIABLES
+#################################################
+total_no_of_consul_servers    = {
+  blue = 5
+  green = 5
+}
+
+consul_dc_name_prefix         = "dc-prefix"
+consul_domain_name = "example.local"
+
+blue_consul_config_parameters = {
+  config_template       = "blue-configuration/consul-config.json"
+  acl_default_policy    = "deny"
+  acl_down_policy       = "extend-cache"
+  autopilot_cleanup_dead_servers = "true"
+  autopilot_last_contact_threshold = "200ms"
+  autopilot_max_trailing_logs = "10"
+  autopilot_server_stablization_time = "10s"
+  autopilot_disable_upgrade_migration = "false",
+  data_dir = "/data"
+  ssl_path  = "/data/ssl"
+  config_path = "/config"
+  config_name = "consul-config.json"
+  ca_path = "/etc/ssl/ca"
+  server_cert_name = "server.crt"
+  client_cert_name = "client.crt"
+  server_cert_key  = "server.key"
+  client_cert_key  = "client.key"
+  check_update_interval = "5m"
+  disable_anonymous_signature = "true"
+  disable_http_unprintable_char_filter = "false"
+  disable_remote_exec = "true"
+  disable_update_check = "true"
+  discard_check_output = "false"
+  discovery_max_stale = "1m"
+  dns_config_allow_stale = "true"
+  dns_config_max_stale = "3m"
+  dns_config_node_ttl = "0s"
+  dns_config_enable_truncate = "true"
+  dns_config_only_passing = "true"
+  dns_config_recursor_timeout = "2s"
+  dns_config_disable_compression = "true"
+  enable_acl_replication = "true"
+  enable_agent_tls_for_checks = "false"
+  enable_debug = "false"
+  enable_syslog = "false"
+  encrypt_verify_incoming = "true"
+  encrypt_verify_outgoing = "true"
+  leave_on_terminate = "true"
+  log_level = "INFO"
+  performance_leave_drain_Time = "5s"
+  performance_raft_multiplier = "1"
+  performance_rpc_hold_timeout = "7s"
+  ports_http = "-1"
+  reconnect_timeout = "24h"
+  retry_join_tag_key = "AutoJoinConsul"
+  retry_interval = "10s"
+  skip_leave_on_interrupt = "true"
+  telemetry_disable_hostname = "false"
+  telemetry_filter_default = "true"
+  telemetry_metrics_prefix = "consul"
+  tls_min_version = "tlsversion"
+  tls_cipher_suites = "cipher_suites"
+  tls_prefer_server_cipher_suites = "true"
+  ui = "true"
+  verify_incoming = "true"
+  verify_outgoing = "true"
+  verify_incoming_rpc = "true"
+  verify_incoming_https = "true"
+  verify_server_hostname = "true"
+  consul_acl_status = "true"
+  acl_policy_ttl = "5m"
+  acl_token_ttl = "8h"
+  acl_token_replication = "true"
+  BACKUP_FREQUENCY = "60" # This is in minutes
+}
+
+green_consul_config_parameters = {
+  config_template       = "green-configuration/consul-config.json"
+  acl_default_policy    = "deny"
+  acl_down_policy       = "extend-cache"
+  autopilot_cleanup_dead_servers = "true"
+  autopilot_last_contact_threshold = "200ms"
+  autopilot_max_trailing_logs = "10"
+  autopilot_server_stablization_time = "10s"
+  autopilot_disable_upgrade_migration = "false",
+  data_dir = "/data"
+  ssl_path  = "/data/ssl"
+  config_path = "/config"
+  config_name = "consul-config.json"
+  ca_path = "/etc/ssl/ca"
+  server_cert_name = "server.crt"
+  client_cert_name = "client.crt"
+  server_cert_key  = "server.key"
+  client_cert_key  = "client.key"
+  check_update_interval = "5m"
+  disable_anonymous_signature = "true"
+  disable_http_unprintable_char_filter = "false"
+  disable_remote_exec = "true"
+  disable_update_check = "true"
+  discard_check_output = "false"
+  discovery_max_stale = "1m"
+  dns_config_allow_stale = "true"
+  dns_config_max_stale = "3m"
+  dns_config_node_ttl = "0s"
+  dns_config_enable_truncate = "true"
+  dns_config_only_passing = "true"
+  dns_config_recursor_timeout = "2s"
+  dns_config_disable_compression = "true"
+  enable_acl_replication = "true"
+  enable_agent_tls_for_checks = "false"
+  enable_debug = "false"
+  enable_syslog = "false"
+  encrypt_verify_incoming = "true"
+  encrypt_verify_outgoing = "true"
+  leave_on_terminate = "true"
+  log_level = "INFO"
+  performance_leave_drain_Time = "5s"
+  performance_raft_multiplier = "1"
+  performance_rpc_hold_timeout = "7s"
+  ports_http = "-1"
+  reconnect_timeout = "24h"
+  retry_join_tag_key = "AutoJoinConsul"
+  retry_interval = "10s"
+  skip_leave_on_interrupt = "true"
+  telemetry_disable_hostname = "false"
+  telemetry_filter_default = "true"
+  telemetry_metrics_prefix = "consul"
+  tls_min_version = "tlsversion"
+  tls_cipher_suites = "cipher_suites"
+  tls_prefer_server_cipher_suites = "true"
+  ui = "true"
+  verify_incoming = "true"
+  verify_outgoing = "true"
+  verify_incoming_rpc = "true"
+  verify_incoming_https = "true"
+  verify_server_hostname = "true"
+  consul_acl_status = "true"
+  acl_policy_ttl = "5m"
+  acl_token_ttl = "8h"
+  acl_token_replication = "true"
+  BACKUP_FREQUENCY = "60" # This is in minutes
+}
+
+consul_token_parameters = {
+  consul_agent_token_name = "consul-agent-token"
+  consul_write_agent_token_name = "consul-write-agent-token"
+  consul_agent_master_token_name = "consul-agent-master-token"
+  consul_replication_token_name = "consul-replication-token"
+  consul_management_name = "consul-for-vault-token"
+}
+
+# if the below 2 changes, make sure to change the data.template_cloudinit_config for both blue and green in 003-user-data.tf
+blue_consul_user_data_scripts = ["user_data/blue/001-create-lvm.sh","user_data/blue/002-consul-env-file.sh","user_data/blue/003-consul-cert-config-copy.sh","user_data/blue/004-start-consul.sh","user_data/blue/005-consul-initial-config.sh","user_data/blue/006-consul-backup-config.py"]
+green_consul_user_data_scripts = ["user_data/green/001-create-lvm.sh","user_data/green/002-consul-env-file.sh","user_data/green/003-consul-cert-config-copy.sh","user_data/green/004-start-consul.sh","user_data/green/005-consul-initial-config.sh","user_data/green/006-consul-backup-config.py"]
+
+consul_kms_grant_operations = {
+  blue = ["Encrypt"]
+  green = ["Encrypt"]
+}
+
+
+blue_consul_user_data_config = {
+  consul_cidr = "192.168.0.0/16"
+  version = "1.4.2"
+  license = "opensource"
+  backup_path = "/backup"
+  restore_bucket_path = ""
+  restore_from_backup = "no"
+}
+
+green_consul_user_data_config = {
+  consul_cidr = "192.168.0.0/16"
+  version = "1.4.2"
+  license = "opensource"
+  backup_path = "/backup"
+  restore_bucket_path = ""
+  restore_from_backup = "no"
+}
+
+blue_consul_vg_config = {
+  vg_names = ["consul-vg"]
+  lv_names = ["consul-lv"]
+  mount_points = ["/mnt_pt"]
+  no_of_volumes_per_vg = ["1"]
+  no_of_lvs_per_vg = ["1"]
+  lv_frees = ["100"]
+}
+green_consul_vg_config = {
+  vg_names = ["consul-vg","backup-vg"]
+  lv_names = ["consul-lv","consul-backup-lv"]
+  mount_points = ["/mnt_pt","/backup"]
+  no_of_volumes_per_vg = ["1","1"]
+  no_of_lvs_per_vg = ["1","1"]
+  lv_frees = ["100","100"]
+}
+
+consul_instance_policy              = {
+  blue = "policies/blue/policy.json"
+  green = "policies/green/policy.json"
+}
+
+consul_instance_type               = {
+  blue = "t3.medium"
+  green = "t3.medium"
+}
+
+consul_instance_prefix              = {
+  blue = "t3"
+  green = "t3"
+}
+
+subnet_to_build_for_consul = {
+  blue = "consul"
+  green = "consul"
+}
+
+consul_ebs_volume_size =    {
+  blue = ["50"]
+  green = ["50","50"]
+}
+
+consul_ebs_volume_type   = {
+  blue = ["gp2"]
+  green = ["gp2","gp2"]
+}
+
+consul_number_of_ebs_devices = {
+  blue = "1"
+  green = "2"
+}
+
+consul_ebs_encrypted = {
+  blue = "true"
+  green = "true"
+}
+#################################################
+# `vault` VARIABLES
+#################################################
+
+total_no_of_vault_servers = {
+  blue = 3
+  green = 3
+}
+
+blue_vault_config_parameters = {
+  consul_config_template = "configuration/blue/consul-config.json"
+  vault_config_template = "configuration/blue/vault.hcl"
+  ui = "true"
+  cache_size = "32000"
+  disable_cache = "false"
+  plugin_directory = "/plugins"
+  log_level = "info"
+  disable_clustering = "false"
+  consul_agent_check_timeout = "5s"
+  consul_agent_consistency_mode = "default"
+  consul_agent_disable_registration = "false"
+  consul_agent_max_parallel = "128"
+  vault_path_in_consul = "vault"
+  consul_agent_connection_method = "https"
+  vault_service_name_in_consul = "vault"
+  vault_service_tags_in_consul = ""
+  vault_service_addrs_in_consul = ""
+  consul_agent_session_ttl = "15s"
+  consul_agent_lock_wait_time = "15s"
+  ssl_path = "/ssl"
+  ca_file = "/etc/ssl/ca"
+  consul_client_cert_name = "consul-client.crt"
+  consul_client_cert_key = "consul-client.key"
+  tls_min_version = "tlsversion"
+  consul_agent_tls_skip_verify = "false"
+  max_request_size = "maxrequestsize"
+  proxy_protocol_behaviour = "use-always"
+  proxy_protocol_authorized_addrs = ""
+  vault_server_cert_name = "server.crt"
+  vault_server_cert_key = "server.key"
+  tls_disable = "false"
+  tls_cipher_suites = "tls_cipher_suites"
+  tls_prefer_server_cipher_suites = "true"
+  tls_require_and_verify_client_cert = "false"
+  tls_disable_client_certs = "false"
+  telemetry_disable_hostname = "false"
+  log_path = "/log"
+  config_path = "/config"
+  data_path = "/data"
+  consul_config_name = "consul-config.json"
+  vault_config_name = "vault-server.hcl"
+  consul_agent_key_name = "agent.key"
+  consul_agent_cert_name = "agent.crt"
+  secret_threshold = "3"
+  vault_license_number = "opensource"
+  vault_ldap_default_ttl = "8h"
+  vault_ldap_max_ttl = "336h"
+  vault_auth_ldap_name = "proj"
+  vault_ldap_case_sensitive_names = "true"
+  vault_ldap_starttls = "true"
+  vault_ldap_name = "ldap://ldapserver.example.local"
+  vault_ldap_userdn = "cn=users,cn=accounts,dc=example,dc=local"
+  vault_ldap_bindpassword = "bindpasword"
+  vault_ldap_groupdn = "cn=groups,cn=accounts,dc=example,dc=local"
+  vault_ldap_userattr = "uid"
+  token_role_orphan_status = "false"
+  token_role_renewable_status = "true"
+}
+green_vault_config_parameters = {
+  consul_config_template = "configuration/green/consul-config.json"
+  vault_config_template = "configuration/green/vault.hcl"
+  ui = "true"
+  cache_size = "32000"
+  disable_cache = "false"
+  plugin_directory = "/plugins"
+  log_level = "info"
+  disable_clustering = "false"
+  consul_agent_check_timeout = "5s"
+  consul_agent_consistency_mode = "default"
+  consul_agent_disable_registration = "false"
+  consul_agent_max_parallel = "128"
+  vault_path_in_consul = "vault"
+  consul_agent_connection_method = "https"
+  vault_service_name_in_consul = "vault"
+  vault_service_tags_in_consul = ""
+  vault_service_addrs_in_consul = ""
+  consul_agent_session_ttl = "15s"
+  consul_agent_lock_wait_time = "15s"
+  ssl_path = "/ssl"
+  ca_file = "/etc/ssl/ca"
+  consul_client_cert_name = "consul-client.crt"
+  consul_client_cert_key = "consul-client.key"
+  tls_min_version = "tlsversion"
+  consul_agent_tls_skip_verify = "false"
+  max_request_size = "maxrequestsize"
+  proxy_protocol_behaviour = "use-always"
+  proxy_protocol_authorized_addrs = ""
+  vault_server_cert_name = "server.crt"
+  vault_server_cert_key = "server.key"
+  tls_disable = "false"
+  tls_cipher_suites = "tls_cipher_suites"
+  tls_prefer_server_cipher_suites = "true"
+  tls_require_and_verify_client_cert = "false"
+  tls_disable_client_certs = "false"
+  telemetry_disable_hostname = "false"
+  log_path = "/log"
+  config_path = "/config"
+  data_path = "/data"
+  consul_config_name = "consul-config.json"
+  vault_config_name = "vault-server.hcl"
+  consul_agent_key_name = "agent.key"
+  consul_agent_cert_name = "agent.crt"
+  secret_threshold = "3"
+  vault_license_number = "opensource"
+  vault_ldap_default_ttl = "8h"
+  vault_ldap_max_ttl = "336h"
+  vault_auth_ldap_name = "proj"
+  vault_ldap_case_sensitive_names = "true"
+  vault_ldap_starttls = "true"
+  vault_ldap_name = "ldap://ldapserver.example.local"
+  vault_ldap_userdn = "cn=users,cn=accounts,dc=example,dc=local"
+  vault_ldap_bindpassword = "bindpasword"
+  vault_ldap_groupdn = "cn=groups,cn=accounts,dc=example,dc=local"
+  vault_ldap_userattr = "uid"
+  token_role_orphan_status = "false"
+  token_role_renewable_status = "true"
+}
+blue_vault_consul_agent_config_parameters = {
+  acl_default_policy    = "deny"
+  acl_down_policy       = "extend-cache"
+  consul_acl_status     = "true"
+  acl_policy_ttl        = "5m"
+  acl_token_ttl         = "8h"
+  autopilot_cleanup_dead_servers = "true"
+  autopilot_last_contact_threshold = "200ms"
+  autopilot_max_trailing_logs = "10"
+  autopilot_server_stablization_time = "10s"
+  autopilot_disable_upgrade_migration = "false",
+  data_dir = "/data"
+  ssl_path  = "/data/ssl"
+  config_path = "/config"
+  config_name = "consul-config.json"
+  ca_path = "/etc/ssl/ca"
+  server_cert_name = "server.crt"
+  client_cert_name = "client.crt"
+  server_cert_key  = "server.key"
+  client_cert_key  = "client.key"
+  check_update_interval = "5m"
+  disable_anonymous_signature = "true"
+  disable_http_unprintable_char_filter = "false"
+  disable_remote_exec = "true"
+  disable_update_check = "true"
+  discard_check_output = "false"
+  discovery_max_stale = "1m"
+  dns_config_allow_stale = "true"
+  dns_config_max_stale = "3m"
+  dns_config_node_ttl = "0s"
+  dns_config_enable_truncate = "true"
+  dns_config_only_passing = "true"
+  dns_config_recursor_timeout = "2s"
+  dns_config_disable_compression = "true"
+  enable_acl_replication = "true"
+  enable_agent_tls_for_checks = "false"
+  enable_debug = "false"
+  enable_syslog = "false"
+  encrypt_verify_incoming = "true"
+  encrypt_verify_outgoing = "true"
+  leave_on_terminate = "true"
+  log_level = "INFO"
+  performance_leave_drain_Time = "5s"
+  performance_raft_multiplier = "1"
+  performance_rpc_hold_timeout = "7s"
+  ports_http = "-1"
+  reconnect_timeout = "24h"
+  retry_join_tag_key = "AutoJoinConsul"
+  retry_interval = "10s"
+  skip_leave_on_interrupt = "true"
+  telemetry_disable_hostname = "true"
+  telemetry_filter_default = "true"
+  telemetry_metrics_prefix = "consul-client"
+  tls_min_version = "tlsversion"
+  tls_cipher_suites = "tls_cipher_suites"
+  tls_prefer_server_cipher_suites = "true"
+  ui = "true"
+  verify_incoming = "true"
+  verify_outgoing = "true"
+  verify_incoming_rpc = "true"
+  verify_incoming_https = "true"
+  verify_server_hostname = "true"
+}
+green_vault_consul_agent_config_parameters = {
+  acl_default_policy    = "deny"
+  acl_down_policy       = "extend-cache"
+  consul_acl_status     = "true"
+  acl_policy_ttl        = "5m"
+  acl_token_ttl         = "8h"
+  autopilot_cleanup_dead_servers = "true"
+  autopilot_last_contact_threshold = "200ms"
+  autopilot_max_trailing_logs = "10"
+  autopilot_server_stablization_time = "10s"
+  autopilot_disable_upgrade_migration = "false",
+  data_dir = "/data"
+  ssl_path  = "/data/ssl"
+  config_path = "/config"
+  config_name = "consul-config.json"
+  ca_path = "/etc/ssl/ca"
+  server_cert_name = "server.crt"
+  client_cert_name = "client.crt"
+  server_cert_key  = "server.key"
+  client_cert_key  = "client.key"
+  check_update_interval = "5m"
+  disable_anonymous_signature = "true"
+  disable_http_unprintable_char_filter = "false"
+  disable_remote_exec = "true"
+  disable_update_check = "true"
+  discard_check_output = "false"
+  discovery_max_stale = "1m"
+  dns_config_allow_stale = "true"
+  dns_config_max_stale = "3m"
+  dns_config_node_ttl = "0s"
+  dns_config_enable_truncate = "true"
+  dns_config_only_passing = "true"
+  dns_config_recursor_timeout = "2s"
+  dns_config_disable_compression = "true"
+  enable_acl_replication = "true"
+  enable_agent_tls_for_checks = "false"
+  enable_debug = "false"
+  enable_syslog = "false"
+  encrypt_verify_incoming = "true"
+  encrypt_verify_outgoing = "true"
+  leave_on_terminate = "true"
+  log_level = "INFO"
+  performance_leave_drain_Time = "5s"
+  performance_raft_multiplier = "1"
+  performance_rpc_hold_timeout = "7s"
+  ports_http = "-1"
+  reconnect_timeout = "24h"
+  retry_join_tag_key = "AutoJoinConsul"
+  retry_interval = "10s"
+  skip_leave_on_interrupt = "true"
+  telemetry_disable_hostname = "true"
+  telemetry_filter_default = "true"
+  telemetry_metrics_prefix = "consul-client"
+  tls_min_version = "tlsversion"
+  tls_cipher_suites = "tls_cipher_suites"
+  tls_prefer_server_cipher_suites = "true"
+  ui = "true"
+  verify_incoming = "true"
+  verify_outgoing = "true"
+  verify_incoming_rpc = "true"
+  verify_incoming_https = "true"
+  verify_server_hostname = "true"
+}
+blue_vault_disallowed_policies_in_token_role = "\"root\",\"policy_name\""
+green_vault_disallowed_policies_in_token_role = "root,policy_name"
+blue_vault_user_data_scripts = ["user_data/blue/001-create-lvm.sh","user_data/blue/002-env-file-setup.sh","user_data/blue/003-download-all-policies-gpg-keys.py","user_data/blue/004-cert-config-copy.sh","user_data/blue/005-start-consul-and-vault.sh","user_data/blue/006-vault-initial-setup.sh"]
+green_vault_user_data_scripts = ["user_data/green/001-create-lvm.sh","user_data/green/002-env-file-setup.sh","user_data/green/003-download-all-policies-gpg-keys.py","user_data/green/004-cert-config-copy.sh","user_data/green/005-start-consul-and-vault.sh","user_data/green/006-vault-initial-setup.sh"]
+blue_new_project_policies = "update-policy1,update-policy2"
+blue_delete_project_policies = "delete-policy1,delete-policy2"
+green_new_project_policies = "update-policy1,update-policy2"
+green_delete_project_policies = "delete-policy1,delete-policy2"
+
+blue_vault_user_data_config = {
+  vault_license = "opensource"
+  vault_audit_log_file_path = "/vault-audit.log"
+  consul_version = "1.4.2"
+  consul_license = "opensource"
+}
+green_vault_user_data_config = {
+  vault_license = "opensource"
+  vault_audit_log_file_path = "/vault-audit.log"
+  consul_version = "1.4.2"
+  consul_license = "opensource"
+}
+blue_vault_policies = ["delete-policy1","policy-name"]
+green_vault_policies = ["delete-policy1","policy-name"]
+blue_vault_policy_dir = "vault_policies/blue"
+green_vault_policy_dir = "vault_policies/green"
+blue_vault_vg_config = {
+  vg_names = ["consul-vg","vault-vg"]
+  lv_names = ["consul-lv","vault-lv"]
+  mount_points = ["/mnt_pt","/mnt_pt_2"]
+  no_of_volumes_per_vg = ["1","1"]
+  no_of_lvs_per_vg = ["1","1"]
+  lv_frees = ["100","100"]
+}
+green_vault_vg_config = {
+  vg_names = ["consul-vg","vault-vg"]
+  lv_names = ["consul-lv","vault-lv"]
+  mount_points = ["/mnt_pt","/mnt_pt_2"]
+  no_of_volumes_per_vg = ["1","1"]
+  no_of_lvs_per_vg = ["1","1"]
+  lv_frees = ["100","100"]
+}
+blue_default_ldap_group_maps = ["group1:policy1","group2:policy2"]
+green_default_ldap_group_maps = ["group1:policy1","group2:policy2"]
+blue_token_role_maps = ["token-role1:vault-policy1","token-role2:vault-policy2"]
+green_token_role_maps = ["token-role1:vault-policy1","token-role2:vault-policy2"]
+vault_instance_policy = {
+  blue = "policies/blue/policy.json"
+  green = "policies/green/policy.json"
+}
+vault_instance_type               = {
+  blue = "t3.medium"
+  green = "t3.medium"
+}
+
+vault_instance_prefix              = {
+  blue = "t3"
+  green = "t3"
+}
+
+subnet_to_build_for_vault = {
+  blue = "vault"
+  green = "vault"
+}
+
+vault_ebs_volume_size =    {
+  blue = ["50","50"]
+  green = ["50","50"]
+}
+
+vault_ebs_volume_type   = {
+  blue = ["gp2","gp2"]
+  green = ["gp2","gp2"]
+}
+
+vault_number_of_ebs_devices = {
+  blue = "2"
+  green = "2"
+}
+
+vault_ebs_encrypted = {
+  blue = "true"
+  green = "true"
+}
+
+vault_kms_grant_operations = {
+  blue = ["Decrypt"]
+  green = ["Decrypt"]
+}

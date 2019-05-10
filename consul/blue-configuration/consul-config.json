@@ -1,0 +1,91 @@
+{
+  "acl" : {
+    "enabled": ${consul_acl_status},
+    "default_policy": "${acl_default_policy}",
+    "down_policy": "${acl_down_policy}",
+    "policy_ttl": "${acl_policy_ttl}",
+    "token_ttl": "${acl_token_ttl}",
+    "enable_token_replication": ${acl_token_replication},
+    "tokens": {
+      "master": "${master_uuid}",
+      "agent_master" : "${agent_master_uuid}"
+    }
+  },
+  "autopilot": {
+    "cleanup_dead_servers" : ${autopilot_cleanup_dead_servers},
+    "last_contact_threshold" : "${autopilot_last_contact_threshold}",
+    "max_trailing_logs" : ${autopilot_max_trailing_logs},
+    "server_stabilization_time": "${autopilot_server_stablization_time}",
+    "disable_upgrade_migration": ${autopilot_disable_upgrade_migration},
+    "upgrade_version_tag": "${deployment_mode}-${consul_license}-${consul_version}"
+  },
+  "bootstrap_expect" : ${number_of_consul_servers},
+  "bind_addr" : "{consul_node_ip}",
+  "ca_path": "${ca_path}",
+  "cert_file": "${server_cert_file}",
+  "check_update_interval" : "${check_update_interval}",
+  "client_addr": "{consul_node_ip}",
+  "datacenter": "${dc_name}",
+  "data_dir": "${data_dir}",
+  "disable_anonymous_signature" : ${disable_anonymous_signature},
+  "disable_http_unprintable_char_filter": ${disable_http_unprintable_char_filter},
+  "disable_remote_exec": ${disable_remote_exec},
+  "disable_update_check": ${disable_update_check},
+  "discard_check_output": ${discard_check_output},
+  "discovery_max_stale": "${discovery_max_stale}",
+  "dns_config": {
+    "allow_stale": ${dns_config_allow_stale},
+    "max_stale": "${dns_config_max_stale}",
+    "node_ttl": "${dns_config_node_ttl}",
+    "enable_truncate": ${dns_config_enable_truncate},
+    "only_passing": ${dns_config_only_passing},
+    "recursor_timeout": "${dns_config_recursor_timeout}",
+    "disable_compression": ${dns_config_disable_compression}
+  },
+  "domain": "${consul_domain_name}",
+  "enable_acl_replication": ${enable_acl_replication},
+  "enable_agent_tls_for_checks": ${enable_agent_tls_for_checks},
+  "enable_debug": ${enable_debug},
+  "enable_syslog" : ${enable_syslog},
+  "encrypt_verify_incoming" : ${encrypt_verify_incoming},
+  "encrypt_verify_outgoing" : ${encrypt_verify_outgoing},
+  "key_file": "${server_key_file}",
+  "leave_on_terminate": ${leave_on_terminate},
+  "log_level": "${log_level}",
+  "node_name": "${deployment_mode}-${environment}-${instance_short_name}-${seq_number}",
+  "performance": {
+    "leave_drain_time": "${performance_leave_drain_Time}",
+    "raft_multiplier": ${performance_raft_multiplier},
+    "rpc_hold_timeout": "${performance_rpc_hold_timeout}"
+  },
+  "primary_datacenter" : "${dc_name}",
+  "ports" : {
+    "https" : ${ports_https},
+    "grpc" : ${grpc_port},
+    "http": ${ports_http}
+  },
+  "reconnect_timeout": "${reconnect_timeout}",
+  "recursors": ${dns_server},
+  "retry_join" : [
+    "provider=aws tag_key=${retry_join_tag_key} tag_value=${dc_name} region=${region}"
+  ],
+  "retry_interval": "${retry_interval}",
+  "server_name": "${environment}-${instance_short_name}.${domain_name}",
+  "server": true,
+  "skip_leave_on_interrupt": ${skip_leave_on_interrupt},
+  "telemetry": {
+    "disable_hostname": ${telemetry_disable_hostname},
+    "filter_default": ${telemetry_filter_default},
+    "metrics_prefix": "${telemetry_metrics_prefix}",
+    "statsd_address": "{consul_node_ip}:<statsd_port>"
+  },
+  "tls_min_version": "${tls_min_version}",
+  "tls_cipher_suites": "${tls_cipher_suites}",
+  "tls_prefer_server_cipher_suites": ${tls_prefer_server_cipher_suites},
+  "ui": ${ui},
+  "verify_incoming": ${verify_incoming},
+  "verify_incoming_rpc": ${verify_incoming_rpc},
+  "verify_incoming_https": ${verify_incoming_https},
+  "verify_outgoing": ${verify_outgoing},
+  "verify_server_hostname": ${verify_server_hostname}
+}
