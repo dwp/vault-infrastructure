@@ -28,6 +28,8 @@ The terragrunt dependencies are created in the same order as defined above
 
 # How to Run this code
 
+> Note: Prepare the common.tfvars and terraform.tfvars
+
 ## Initial One Time Setup
 Since we are using External CA for the certificates used for Vault and Conusl, these needs to be done in stages. These needs to be done only for the first time. Post that we can use `plan-all` or `apply-all` for planning and creating the setup
 
@@ -42,8 +44,9 @@ Post the above, run `terragrunt plan-all or apply-all` from the root folder to c
 ## Switching Over from Blue to Green or vice versa
 This example assumes that we do have a blue setup running and we wanted to setup and Switch to Green
 
-1. First set the Green , by running `terragrunt plan-all/apply-all -var is_blue_mode_active="yes" -var is_green_mode_active="yes" -var keep_dns_deployment_mode="blue"``
-2. Post the verification of Green Setup, to Switch over, run
+1. Make necessary changes to policies, user data scripts, vault or consul config changes as required in Green folder
+2. First create the Green servers, by running `terragrunt plan-all/apply-all -var is_blue_mode_active="yes" -var is_green_mode_active="yes" -var keep_dns_deployment_mode="blue"``
+3. Post the verification of Green Setup, to Switch over, run
 `terragrunt plan-all/apply-all -var is_blue_mode_active="no" -var is_green_mode_active="yes" -var keep_dns_deployment_mode="green"`
 
 
@@ -93,4 +96,10 @@ The terraform sets up the infrastructure as below and ready for use
 # Future Plans
 Planning to convert this into a Terraform child module which does all of these things with only variable changes
 
-> Note: Replace any values starting with '<' and ending '>' in all the files with appropriate values before running terraform
+# Maintainer
+Burbank Team
+
+#Author
+Arun Jayanth
+
+[Contribution guidelines for this project](./CONTRIBUTING.md)
