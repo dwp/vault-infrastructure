@@ -57,11 +57,11 @@ Because of the Terragrunt dependency definition , we create the necessary AWS in
 ## basic_infra
 This section of Terraform Code creates 3 basic requirements for the Base Infrastructure to support Vault and Consul Nodes.
 
-* [AWS Basic Infrastructure](#AWS Basic Infrastructure)
-* [KMS Key](#KMS Key Creation) for Encrypting Vault Management Tokens and ACL Tokens generated during Consul Initial setup
+* [AWS Basic Infrastructure](#AWSBasicInfrastructure)
+* [KMS Key](#KMSKeyCreation) for Encrypting Vault Management Tokens and ACL Tokens generated during Consul Initial setup
 * [Upload Slack Hook](#Slack) information for sending alerts when Backup of Consul Failed
 
-### AWS Basic Infrastructure<a name="AWS Basic Infrastructure"></a>
+### AWS Basic Infrastructure<a name="AWSBasicInfrastructure"></a>
 * A VPC with dhcp options
 * One Public Subnet and 2 Private Subnets named consul and vault
 * One Internet Gateway for the project/region and NAT Gateways for each Availability Zone (based on `what_services_i_need` variable)
@@ -73,7 +73,7 @@ This section of Terraform Code creates 3 basic requirements for the Base Infrast
 * Adds the Inbound SSH access to the Generic Security Group. (if `what_services_i_need` variable contains ssh)
 * Attaches the VPC to existing Private Route53 Zone (based on `associate_private_zones` variable)
 
-### KMS Key Creation<a name="KMS Key Creation"></a>
+### KMS Key Creation<a name="KMSKeyCreation"></a>
 * Creates a KMS Key for Encrypting Vault Management Tokens and ACL Tokens created by Consul during initial setup
 
 ### Slack<a name="Slack"></a>
