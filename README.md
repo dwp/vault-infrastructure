@@ -3,11 +3,15 @@
 Terraform code to setup a Vault infrastructure with Consul backend for High Availability (HA). Terragrunt is used as a wrapper to our terraform code to put dependencies between folders and execute all folders.
 
 # Terragrunt
-
 More information on terragrunt can be found in https://github.com/gruntwork-io/terragrunt
 
-# How is it structured
+# Vault Infrastructure Layout
+The code for Vault Infrastructure is divided into three functions
+1. Basic AWS Infrastructure
+2. Consul Backend
+3. Vault Cluster
 
+# How is it structured
 * Code is separated into folders based on its function and requirement
 * Each folder contains remotestate.tf, terraform.tfvars, output.tf and variables.tf by Default
     * remotestate.tf - Contains Remote State definition of Terraform
@@ -17,19 +21,11 @@ More information on terragrunt can be found in https://github.com/gruntwork-io/t
 * Apart of the above, folders will sub-folders and tf files which contains terraform resource or module definitions and files for the Infrastructure
 * On the Base folder , we have common.tfvars and terraform.tfvars which contains values to all variables and terraform.tfvars containing the Terragrunt definition
 
-# How this Vault Infrastructure is structured
-
-The code for Vault Infrastructure is divided into three functions
-1. Basic AWS Infrastructure
-2. Consul Backend
-3. Vault Cluster
-
 The terragrunt dependencies are created in the same order as defined above
-
 
 # How to Run this code
 
-> Note: Prepare the common.tfvars and terraform.tfvars
+> Note: Prepare the files *common.tfvars* and *terraform.tfvars*
 
 ## Initial One Time Setup
 Since we are using External CA for the certificates used for Vault and Conusl, these needs to be done in stages. These needs to be done only for the first time. Post that we can use `plan-all` or `apply-all` for planning and creating the setup
@@ -55,8 +51,7 @@ This example assumes that we do have a blue setup running and we wanted to setup
 We use our custom encrypted AMI which has all the necessary installations like Consul, Vault, etc and necessary firewall rules integrated into it. For more details on how to build the AMI, refer to our GIT repo https://github.com/dwp/packer-infrastructure
 
 # Overview of Setup done by Terraform
-
-Because of the Terragrunt dependency definition , we create the necessary AWS infrastructure like VPC, Gateways, etc and then build Consul Servers with Initial Setup and then move on to create Vault Clusters.
+Because of the Terragrunt dependency definition, we create the necessary AWS infrastructure like VPC, Gateways, etc and then build Consul Servers with Initial Setup and then move on to create Vault Clusters.
 
 ## basic_infra
 This section of Terraform Code creates 3 basic requirements for the Base Infrastructure to support Vault and Consul Nodes.
