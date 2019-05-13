@@ -1,14 +1,13 @@
-# About
-
+# Building a Vault Infrastructure
 Terraform code to setup a Vault infrastructure with Consul backend for High Availability (HA). [Terragrunt](https://github.com/gruntwork-io/terragrunt) Terragrunt is used as a wrapper to our terraform code to put dependencies between folders and execute all folders.
 
-# Vault Infrastructure Layout
+## Vault Infrastructure Layout
 The code for Vault Infrastructure is divided into three functions
 1. Basic AWS Infrastructure
 2. Consul Backend
 3. Vault Cluster
 
-# How is it structured
+## How is it structured
 * Code is separated into folders based on its function and requirement
 * Each folder contains remotestate.tf, terraform.tfvars, output.tf and variables.tf by Default
     * remotestate.tf - Contains Remote State definition of Terraform
@@ -20,11 +19,11 @@ The code for Vault Infrastructure is divided into three functions
 
 The terragrunt dependencies are created in the same order as defined above
 
-# How to Run this code
+## How to Run this code
 
 > Note: Prepare the files *common.tfvars* and *terraform.tfvars*
 
-## Initial One Time Setup
+### Initial One Time Setup
 Since we are using External CA for the certificates used for Vault and Conusl, these needs to be done in stages. These needs to be done only for the first time. Post that we can use `plan-all` or `apply-all` for planning and creating the setup
 
 1. Go to basic_infra folder and run `terragrunt plan` to plan the infrastructure and `terragrunt apply` to apply the infrastructure.
@@ -35,7 +34,7 @@ Since we are using External CA for the certificates used for Vault and Conusl, t
 
 Post the above, run `terragrunt plan-all or apply-all` from the root folder to create rest of the Infrastructure
 
-## Switching Over from Blue to Green or vice versa
+### Switching Over from Blue to Green or vice versa
 This example assumes that we do have a blue setup running and we wanted to setup and Switch to Green
 
 1. Make necessary changes to policies, user data scripts, vault or consul config changes as required in Green folder
@@ -44,20 +43,17 @@ This example assumes that we do have a blue setup running and we wanted to setup
 `terragrunt plan-all/apply-all -var is_blue_mode_active="no" -var is_green_mode_active="yes" -var keep_dns_deployment_mode="green"`
 
 
-# AMI
-We use our custom encrypted AMI which has all the necessary installations like Consul, Vault, etc and necessary firewall rules integrated into it. For more details on how to build the AMI, refer to our GIT repo https://github.com/dwp/packer-infrastructure
-
-# Overview of Setup done by Terraform
+## Overview of Setup done by Terraform
 Because of the Terragrunt dependency definition, we create the necessary AWS infrastructure like VPC, Gateways, etc and then build Consul Servers with Initial Setup and then move on to create Vault Clusters.
 
-## basic_infra
+### basic_infra
 This section of Terraform Code creates 3 basic requirements for the Base Infrastructure to support Vault and Consul Nodes.
 
 * [AWS Basic Infrastructure](#AWSBasicInfrastructure)
 * [KMS Key](#KMSKeyCreation) for Encrypting Vault Management Tokens and ACL Tokens generated during Consul Initial setup
 * [Upload Slack Hook](#Slack) information for sending alerts when Backup of Consul Failed
 
-### AWS Basic Infrastructure<a name="AWSBasicInfrastructure"></a>
+#### AWS Basic Infrastructure<a name="AWSBasicInfrastructure"></a>
 * A VPC with dhcp options
 * One Public Subnet and 2 Private Subnets named consul and vault
 * One Internet Gateway for the project/region and NAT Gateways for each Availability Zone (based on `what_services_i_need` variable)
@@ -69,25 +65,27 @@ This section of Terraform Code creates 3 basic requirements for the Base Infrast
 * Adds the Inbound SSH access to the Generic Security Group. (if `what_services_i_need` variable contains ssh)
 * Attaches the VPC to existing Private Route53 Zone (based on `associate_private_zones` variable)
 
-### KMS Key Creation<a name="KMSKeyCreation"></a>
+##### Amazon Machine Image (AMI)
+A custom encrypted AMI which has all the necessary installations like Consul, Vault, etc and necessary firewall rules is available from [dwp/packer-infrastructure] (https://github.com/dwp/packer-infrastructure)
+
+##### AWS KMS Key Creation<a name="KMSKeyCreation"></a>
 * Creates a KMS Key for Encrypting Vault Management Tokens and ACL Tokens created by Consul during initial setup
 
-### Slack<a name="Slack"></a>
-* Uploads Slack Hook URLs and Slack Channel information to SSM for Lambda to pick up and notify any problems with Consul Backup
 
 ## consul
 This section of Terraform code creates all the necessary Consul Configuration, this is done through the combination of Terraform and EC2 User data scripts, the setup done includes, creating certificates, configuring Consul Server configuration , do LVM operations, create and apply Consul ACL policies, Create ACL tokens , backup and restore from backup (if required). It also sets the Mutual TLS between Consul Server and Consul Client.
 
+For Consul backup notification a Slack Hook and Lambda are used to pick up and notify on any problems with Consul Backup.
+
 ## vault
 This section of Terraform code creates all the necessary Vault Configuration, this is done through the combination of Terraform and EC2 User data scripts, the setup done includes, creating certificates, configuring Vault Server configuration , do LVM operations, apply Standard Vault ACL policies, Configure LDAP Groups and map LDAP groups with policies, rotate Unseal Keys and destroy root token
-
 
 ## Setup Diagram
 The terraform sets up the infrastructure as below and ready for use
 ![Vault Setup](./github-diagram.jpg)
 
 # Future Plans
-Planning to convert this into a Terraform child module which does all of these things with only variable changes
+Planning to convert this into a Terraform child module which does all of these things with only variable changes.
 
 # Maintainer
 Burbank Team
