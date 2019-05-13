@@ -51,7 +51,7 @@ This section of Terraform Code creates 3 basic requirements for the Base Infrast
 
 * [AWS Basic Infrastructure](#AWSBasicInfrastructure)
 * [KMS Key](#KMSKeyCreation) for Encrypting Vault Management Tokens and ACL Tokens generated during Consul Initial setup
-* [Upload Slack Hook](#Slack) information for sending alerts when Backup of Consul Failed
+* Configure alerts when Backup of Consul Failed
 
 #### AWS Basic Infrastructure<a name="AWSBasicInfrastructure"></a>
 * A VPC with dhcp options
