@@ -1,0 +1,7 @@
+.kitchen/
+.terraform/
+terraform.tfstate*
+*secret.tfvars
+*.plan
+*.key
+.terragrunt*
