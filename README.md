@@ -38,7 +38,7 @@ Post the above, run `terragrunt plan-all or apply-all` from the root folder to c
 This example assumes that we do have a blue setup running and we wanted to setup and Switch to Green
 
 1. Make necessary changes to policies, user data scripts, vault or consul config changes as required in Green folder
-2. First create the Green servers, by running `terragrunt plan-all/apply-all -var is_blue_mode_active="yes" -var is_green_mode_active="yes" -var keep_dns_deployment_mode="blue"``
+2. First create the Green servers, by running `terragrunt plan-all/apply-all -var is_blue_mode_active="yes" -var is_green_mode_active="yes" -var keep_dns_deployment_mode="blue"`
 3. Post the verification of Green Setup, to Switch over, run
 `terragrunt plan-all/apply-all -var is_blue_mode_active="no" -var is_green_mode_active="yes" -var keep_dns_deployment_mode="green"`
 
