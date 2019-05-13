@@ -1,9 +1,6 @@
 # About
 
-Terraform code to setup a Vault infrastructure with Consul backend for High Availability (HA). Terragrunt is used as a wrapper to our terraform code to put dependencies between folders and execute all folders.
-
-# Terragrunt
-More information on terragrunt can be found in https://github.com/gruntwork-io/terragrunt
+Terraform code to setup a Vault infrastructure with Consul backend for High Availability (HA). [Terragrunt](https://github.com/gruntwork-io/terragrunt) Terragrunt is used as a wrapper to our terraform code to put dependencies between folders and execute all folders.
 
 # Vault Infrastructure Layout
 The code for Vault Infrastructure is divided into three functions
