@@ -8,7 +8,7 @@ The code for Vault Infrastructure is divided into three functions
 3. Vault Cluster
 
 ## How is it structured
-* Code is separated into folders based on its function and requirement
+* Code is separated into folders based on its function and requirement:
 * Each folder contains remotestate.tf, terraform.tfvars, output.tf and variables.tf by Default
     * remotestate.tf - Contains Remote State definition of Terraform
     * terraform.tfvars - Contains Terragrunt Dependency definitions
