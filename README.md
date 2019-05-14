@@ -83,7 +83,7 @@ This section of Terraform code creates all the necessary Vault Configuration, th
 
 ## Setup Diagram
 The terraform sets up the infrastructure as below and ready for use
-![Vault Setup](./github-diagram.jpg)
+![Vault Setup](./vault-infrastructure.jpg)
 
 # Future Plans
 Planning to convert this into a Terraform child module which does all of these things with only variable changes.
