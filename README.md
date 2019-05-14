@@ -1,5 +1,6 @@
 # Building a Vault Infrastructure
-Terraform code to setup a Vault infrastructure with Consul backend for High Availability (HA). [Terragrunt](https://github.com/gruntwork-io/terragrunt) is used as a wrapper to our terraform code to put dependencies between folders and execute all folders.
+[Vault](https://www.hashicorp.com/products/vault/) is a secure, reliable store for password, encryption keys, SSL Certificates.
+[Terraform](https://www.hashicorp.com/products/terraform/) is used to provision a Vault infrastructure with Consul backend for high availability (HA). [Terragrunt](https://github.com/gruntwork-io/terragrunt) is used as a wrapper over terraform code to put dependencies between folders and execute all folders.
 
 ## Vault Infrastructure Layout
 The code for Vault Infrastructure is divided into three functions:
@@ -15,9 +16,9 @@ The code for Vault Infrastructure is divided into three functions:
     * variables.tf - Contains all required Variable definitions for Terraform
     * output.tf - Contains all output definitions for Terraform
 * Apart of the above, folders will sub-folders and tf files which contains terraform resource or module definitions and files for the Infrastructure
-* On the Base folder , we have common.tfvars and terraform.tfvars which contains values to all variables and terraform.tfvars containing the Terragrunt definition
+* On the Base folder , we have common.tfvars and terraform.tfvars which contains values to all variables and terraform.tfvars containing the Terragrunt definition.
 
-The terragrunt dependencies are created in the same order as defined above
+Terragrunt dependencies are created in the order defined above.
 
 ## How to Run this code
 
