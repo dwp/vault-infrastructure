@@ -1,23 +1,24 @@
 # Building a Vault Infrastructure
-Terraform code to setup a Vault infrastructure with Consul backend for High Availability (HA). [Terragrunt](https://github.com/gruntwork-io/terragrunt) is used as a wrapper to our terraform code to put dependencies between folders and execute all folders.
+[Vault](https://www.hashicorp.com/products/vault/) is a secure, reliable store for password, encryption keys, SSL Certificates.
+[Terraform](https://www.hashicorp.com/products/terraform/) is used to provision a Vault infrastructure with [Consul](https://www.hashicorp.com/products/consul/) backend for high availability (HA). [Terragrunt](https://github.com/gruntwork-io/terragrunt) is used as a wrapper over terraform code to put dependencies between folders and execute all folders.
 
 ## Vault Infrastructure Layout
-The code for Vault Infrastructure is divided into three functions
-1. Basic AWS Infrastructure
-2. Consul Backend
-3. Vault Cluster
+The code for Vault Infrastructure is divided into three functions:
+1. Basic AWS Infrastructure.
+2. Consul Backend.
+3. Vault Cluster.
 
 ## How is it structured
-* Code is separated into folders based on its function and requirement
+* Code is separated into folders based on its function and requirement:
 * Each folder contains remotestate.tf, terraform.tfvars, output.tf and variables.tf by Default
-    * remotestate.tf - Contains Remote State definition of Terraform
-    * terraform.tfvars - Contains Terragrunt Dependency definitions
-    * variables.tf - Contains all required Variable definitions for Terraform
-    * output.tf - Contains all output definitions for Terraform
+    * *remotestate.tf* - Terraform remote state definition.
+    * *terraform.tfvars* - Terragrunt Dependency definitions.
+    * *variables.tf* - Terraform variables.
+    * output.tf - Terraform output definitions.
 * Apart of the above, folders will sub-folders and tf files which contains terraform resource or module definitions and files for the Infrastructure
-* On the Base folder , we have common.tfvars and terraform.tfvars which contains values to all variables and terraform.tfvars containing the Terragrunt definition
+* On the Base folder, *common.tfvars* and *terraform.tfvars* contain values to all variables and terraform.tfvars containing the Terragrunt definition.
 
-The terragrunt dependencies are created in the same order as defined above
+Terragrunt dependencies are created in the order defined above.
 
 ## How to Run this code
 
@@ -46,8 +47,8 @@ This example assumes that we do have a blue setup running and we wanted to setup
 ## Overview of Setup done by Terraform
 Because of the Terragrunt dependency definition, we create the necessary AWS infrastructure like VPC, Gateways, etc and then build Consul Servers with Initial Setup and then move on to create Vault Clusters.
 
-### basic_infra
-This section of Terraform Code creates 3 basic requirements for the Base Infrastructure to support Vault and Consul Nodes.
+### Basic Infrastructure (base_infra)
+This section of Terraform Code creates 3 basic requirements needed for the Base Infrastructure to support Vault and Consul Nodes:
 
 * [AWS Basic Infrastructure](#AWSBasicInfrastructure)
 * [KMS Key](#KMSKeyCreation) for Encrypting Vault Management Tokens and ACL Tokens generated during Consul Initial setup
@@ -82,7 +83,7 @@ This section of Terraform code creates all the necessary Vault Configuration, th
 
 ## Setup Diagram
 The terraform sets up the infrastructure as below and ready for use
-![Vault Setup](./github-diagram.jpg)
+![Vault Setup](./vault-infrastructure.jpg)
 
 # Future Plans
 Planning to convert this into a Terraform child module which does all of these things with only variable changes.
