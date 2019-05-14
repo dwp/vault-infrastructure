@@ -11,12 +11,12 @@ The code for Vault Infrastructure is divided into three functions:
 ## How is it structured
 * Code is separated into folders based on its function and requirement:
 * Each folder contains remotestate.tf, terraform.tfvars, output.tf and variables.tf by Default
-    * remotestate.tf - Contains Remote State definition of Terraform
-    * terraform.tfvars - Contains Terragrunt Dependency definitions
-    * variables.tf - Contains all required Variable definitions for Terraform
-    * output.tf - Contains all output definitions for Terraform
+    * *remotestate.tf* - Terraform remote state definition.
+    * *terraform.tfvars* - Terragrunt Dependency definitions.
+    * *variables.tf* - Terraform variables.
+    * output.tf - Terraform output definitions.
 * Apart of the above, folders will sub-folders and tf files which contains terraform resource or module definitions and files for the Infrastructure
-* On the Base folder , we have common.tfvars and terraform.tfvars which contains values to all variables and terraform.tfvars containing the Terragrunt definition.
+* On the Base folder, *common.tfvars* and *terraform.tfvars* contain values to all variables and terraform.tfvars containing the Terragrunt definition.
 
 Terragrunt dependencies are created in the order defined above.
 
