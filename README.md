@@ -46,10 +46,10 @@ This example assumes that we do have a blue setup running and we wanted to setup
 ## Overview of Setup done by Terraform
 Because of the Terragrunt dependency definition, we create the necessary AWS infrastructure like VPC, Gateways, etc and then build Consul Servers with Initial Setup and then move on to create Vault Clusters.
 
-### basic_infra
-This section of Terraform Code creates 3 basic requirements for the Base Infrastructure to support Vault and Consul Nodes.
+### Basic Infrastructure (base_infra)
+This section of Terraform Code creates 3 basic requirements needed for the Base Infrastructure to support Vault and Consul Nodes:
 
-* [AWS Basic Infrastructure](#AWSBasicInfrastructure)
+* [AWS Basic Infrastructure](#AWSBasicInfrastructure
 * [KMS Key](#KMSKeyCreation) for Encrypting Vault Management Tokens and ACL Tokens generated during Consul Initial setup
 * Configure alerts when Backup of Consul Failed
 
