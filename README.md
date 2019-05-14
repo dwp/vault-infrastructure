@@ -2,10 +2,10 @@
 Terraform code to setup a Vault infrastructure with Consul backend for High Availability (HA). [Terragrunt](https://github.com/gruntwork-io/terragrunt) is used as a wrapper to our terraform code to put dependencies between folders and execute all folders.
 
 ## Vault Infrastructure Layout
-The code for Vault Infrastructure is divided into three functions
-1. Basic AWS Infrastructure
-2. Consul Backend
-3. Vault Cluster
+The code for Vault Infrastructure is divided into three functions:
+1. Basic AWS Infrastructure.
+2. Consul Backend.
+3. Vault Cluster.
 
 ## How is it structured
 * Code is separated into folders based on its function and requirement:
