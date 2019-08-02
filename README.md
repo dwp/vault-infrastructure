@@ -2,13 +2,15 @@
 [Vault](https://www.hashicorp.com/products/vault/) is a secure, reliable store for password, encryption keys, SSL Certificates.
 [Terraform](https://www.hashicorp.com/products/terraform/) is used to provision a Vault infrastructure with [Consul](https://www.hashicorp.com/products/consul/) backend for high availability (HA) on Blue/Green setup. [Terragrunt](https://github.com/gruntwork-io/terragrunt) is used as a wrapper over terraform code to put dependencies between folders and execute all folders.
 
+## Vault Infrastructure Diagram
+
+![Vault Infrastructure](./vault-infrastructure.svg)
+
 ## Vault Infrastructure Layout
 The code for Vault Infrastructure is divided into three functions:
 1. Basic AWS Infrastructure.
 2. Consul Backend.
 3. Vault Cluster.
-
-![Vault Infrastructure](./vault-infrastructure.svg)
 
 ## How is it structured
 * Code is separated into folders based on its function and requirement:
