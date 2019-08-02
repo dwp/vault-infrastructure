@@ -8,6 +8,8 @@ The code for Vault Infrastructure is divided into three functions:
 2. Consul Backend.
 3. Vault Cluster.
 
+![Vault Infrastructure](./vault-infrastructure.svg)
+
 ## How is it structured
 * Code is separated into folders based on its function and requirement:
 * Each folder contains remotestate.tf, terraform.tfvars, output.tf and variables.tf by Default
