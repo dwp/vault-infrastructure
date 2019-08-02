@@ -74,10 +74,8 @@ This section of Terraform Code creates 3 basic requirements needed for the Base 
 ##### Amazon Machine Image (AMI)
 A custom encrypted AMI which has all the necessary installations like Consul, Vault, etc and necessary firewall rules is available from [dwp/packer-infrastructure] (https://github.com/dwp/packer-infrastructure)
 
-
 ##### AWS KMS Key Creation<a name="KMSKeyCreation"></a>
 * Creates a KMS Key for Encrypting Vault Management Tokens and ACL Tokens created by Consul during initial setup.
-
 
 ## consul
 This section of Terraform code creates all the necessary Consul Configuration, using a combination of Terraform and EC2 User data scripts, the setup done includes, creating certificates, configuring Consul Server configuration , do LVM operations, create and apply Consul ACL policies, Create ACL tokens, backup and restore from backup (if required). It also sets the Mutual TLS between Consul Server and Consul Client.
@@ -86,10 +84,6 @@ For Consul backup notification a Slack Hook and Lambda are used to pick up and n
 
 ## vault
 This section of Terraform code creates all the necessary Vault Configuration, using a combination of Terraform and EC2 User data scripts, the setup done includes, creating certificates, configuring Vault Server configuration, do LVM operations, apply Standard Vault ACL policies, Configure LDAP Groups and map LDAP groups with policies, rotate Unseal Keys and destroy root token.
-
-## Setup Diagram
-The terraform sets up the infrastructure described in this diagram:
-![Vault Setup](./vault-infrastructure.jpg)
 
 # Future Plans
 Planning to convert this into a Terraform child module which does all of these things with only variable changes.
