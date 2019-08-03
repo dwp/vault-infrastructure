@@ -2,6 +2,10 @@
 [Vault](https://www.hashicorp.com/products/vault/) is a secure, reliable store for password, encryption keys, SSL Certificates.
 [Terraform](https://www.hashicorp.com/products/terraform/) is used to provision a Vault infrastructure with [Consul](https://www.hashicorp.com/products/consul/) backend for high availability (HA) on Blue/Green setup. [Terragrunt](https://github.com/gruntwork-io/terragrunt) is used as a wrapper over terraform code to put dependencies between folders and execute all folders.
 
+## Vault Infrastructure Diagram
+
+![Vault Infrastructure](./vault-infrastructure.svg)
+
 ## Vault Infrastructure Layout
 The code for Vault Infrastructure is divided into three functions:
 1. Basic AWS Infrastructure.
@@ -25,7 +29,9 @@ Terragrunt dependencies are created in the order defined above.
 > Note: Prepare the files *common.tfvars* and *terraform.tfvars*
 
 ### Initial One Time Setup
-Since we are using External CA for the certificates used for Vault and Consul, these needs to be done in stages. These needs to be done only for the first time. Post that we can use `plan-all` or `apply-all` for planning and creating the setup
+
+Since we are using External CA for the certificates used for Vault and Consul, these need to be done in stages. These needs to be done only for the first time. Post that we can use `plan-all` or `apply-all` for planning and creating the setup
+
 
 1. Go to *basic_infra* folder and run `terragrunt plan` to plan the infrastructure and `terragrunt apply` to apply the infrastructure.
 2. Then go to consul and execute `terragrunt  plan/apply --target` on all the key and csr modules.
@@ -83,9 +89,6 @@ For Consul backup notification a Slack Hook and Lambda are used to pick up and n
 ## vault
 This section of Terraform code creates all the necessary Vault Configuration, using a combination of Terraform and EC2 User data scripts, the setup done includes, creating certificates, configuring Vault Server configuration, do LVM operations, apply Standard Vault ACL policies, Configure LDAP Groups and map LDAP groups with policies, rotate Unseal Keys and destroy root token.
 
-## Setup Diagram
-The terraform sets up the infrastructure described in this diagram:
-![Vault Setup](./vault-infrastructure.jpg)
 
 # Future Plans
 Planning to convert this into a Terraform child module which does all of these things with only variable changes.
